@@ -44,7 +44,7 @@ app.use('*', cors(corsOptions));
 app.use(limiter);
 app.use(helmet());
 
-mongoose.connect('mongodb://localhost:27017/bitfilmsdb');
+mongoose.connect('mongodb://localhost:27017/moviesdb');
 
 // логгер запросов
 app.use(requestLogger);
