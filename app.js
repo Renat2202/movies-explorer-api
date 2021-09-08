@@ -50,11 +50,11 @@ mongoose.connect('mongodb://localhost:27017/bitfilmsdb');
 app.use(requestLogger);
 
 // обработчики роутов
-app.post('/signup', validateAuthorization, validateSignUp, createUser);
-app.post('/signin', validateAuthorization, validateSignIn, login);
+app.post('/signup', validateSignUp, createUser);
+app.post('/signin', validateSignIn, login);
 
-app.use('/users', auth, require('./routes/users'));
-app.use('/movies', auth, require('./routes/movies'));
+app.use('/users', validateAuthorization, auth, require('./routes/users'));
+app.use('/movies', validateAuthorization, auth, require('./routes/movies'));
 
 // логгур ошибок
 app.use(errorLogger);
