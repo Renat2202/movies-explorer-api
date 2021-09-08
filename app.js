@@ -2,6 +2,7 @@ const express = require('express');
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
 const rateLimit = require('express-rate-limit');
+const cors = require('cors');
 const helmet = require('helmet');
 
 const { PORT = 3000 } = process.env;
@@ -21,9 +22,22 @@ const limiter = rateLimit({
   max: 100, // limit each IP to 100 requests per windowMs
 });
 
+const corsOptions = {
+  origin: [
+    'https://www.renat-frontend.tk',
+    'https://renat-frontend.tk',
+    'http://renat-frontend.tk',
+  ],
+  methods: ['GET', 'HEAD', 'PUT', 'PATCH', 'POST', 'DELETE'],
+  preflightContinue: false,
+  optionsSuccessStatus: 204,
+  allowedHeaders: ['Content-Type', 'origin', 'Authorization'],
+};
+
 const app = express();
 
 app.use(bodyParser.json());
+app.use('*', cors(corsOptions));
 app.use(limiter);
 app.use(helmet());
 
