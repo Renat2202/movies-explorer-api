@@ -8,7 +8,9 @@ const helmet = require('helmet');
 
 const { PORT = 3000 } = process.env;
 
+const joiErrors = require('celebrate').errors;
 const { login, createUser } = require('./controllers/users');
+const { validateSignUp, validateSignIn, validateAuthorization } = require('./middlewares/validation');
 
 const errors = require('./errors/errors');
 
@@ -48,8 +50,8 @@ mongoose.connect('mongodb://localhost:27017/bitfilmsdb');
 app.use(requestLogger);
 
 // обработчики роутов
-app.post('/signup', createUser);
-app.post('/signin', login);
+app.post('/signup', validateAuthorization, validateSignUp, createUser);
+app.post('/signin', validateAuthorization, validateSignIn, login);
 
 app.use('/users', auth, require('./routes/users'));
 app.use('/movies', auth, require('./routes/movies'));
@@ -63,7 +65,7 @@ app.use('*', (req, res, next) => {
 });
 
 // обработчик ошибок celebrate
-// app.use(joiErrors());
+app.use(joiErrors());
 
 // централизованный обработчик ошибок
 app.use((err, req, res, next) => {
