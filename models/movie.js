@@ -1,6 +1,5 @@
 const mongoose = require('mongoose');
-// const bcrypt = require('bcryptjs');
-const validator = require('validator');
+const { default: validator } = require('validator');
 
 const movieSchema = new mongoose.Schema({
   country: {
@@ -26,26 +25,34 @@ const movieSchema = new mongoose.Schema({
   image: {
     type: String,
     required: true,
-    validate: validator.isURL,
+    validate: {
+      validator: (link) => validator.isURL(link, { require_protocol: true }),
+      message: 'Некоректная ссылка',
+    },
   },
   trailer: {
     type: String,
     required: true,
-    validate: validator.isURL,
+    validate: {
+      validator: (link) => validator.isURL(link, { require_protocol: true }),
+      message: 'Некоректная ссылка',
+    },
   },
   thumbnail: {
     type: String,
     required: true,
-    validate: validator.isURL,
+    validate: {
+      validator: (link) => validator.isURL(link, { require_protocol: true }),
+      message: 'Некоректная ссылка',
+    },
   },
   owner: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: 'user',
     required: true,
+    ref: 'user',
   },
   movieId: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: 'movie',
+    type: Number,
     required: true,
   },
   nameRU: {

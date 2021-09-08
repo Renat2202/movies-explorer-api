@@ -11,12 +11,12 @@ const ConflictError = require('../errors/conflict-error');
 const { JWT_SECRET = 'secret-key' } = process.env;
 
 module.exports.getUser = (req, res, next) => {
-  User.findById(req.params.userId)
+  User.findById(req.user._id)
     .then((user) => {
       if (user === null) {
         throw new NotFoundError('Пользователь по указанному _id не найден.');
       }
-      return res.status(200).send({ user });
+      return res.status(200).send({ email: user.email, name: user.name });
     })
     .catch((err) => {
       if (err.name === 'CastError') {
@@ -32,11 +32,11 @@ module.exports.updateUser = (req, res, next) => {
   const { email, name } = req.body;
 
   User.findByIdAndUpdate(currentUser, { $set: { email, name } }, { new: true, runValidators: true })
-    .then((user) => {
-      if (user === null) {
+    .then((updatedUser) => {
+      if (currentUser === null) {
         throw new NotFoundError('Пользователь по указанному _id не найден.');
       }
-      return res.status(200).send({ user });
+      return res.status(200).send({ email: updatedUser.email, name: updatedUser.name });
     })
     .catch((err) => {
       if (err.name === 'CastError') {

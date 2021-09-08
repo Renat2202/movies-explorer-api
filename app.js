@@ -27,12 +27,7 @@ app.use(bodyParser.json());
 app.use(limiter);
 app.use(helmet());
 
-mongoose.connect('mongodb://localhost:27017/bitfilmsdb', {
-  useNewUrlParser: true,
-  useCreateIndex: true,
-  useFindAndModify: false,
-  useUnifiedTopology: true,
-});
+mongoose.connect('mongodb://localhost:27017/bitfilmsdb');
 
 // логгер запросов
 app.use(requestLogger);
