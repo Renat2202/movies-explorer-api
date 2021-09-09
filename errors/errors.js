@@ -1,3 +1,5 @@
+const { errorMessages } = require('../constants/constants');
+
 function errors(err, req, res, next) {
   const { statusCode = 500, message } = err;
 
@@ -6,7 +8,7 @@ function errors(err, req, res, next) {
     .send({
       // проверяем статус и выставляем сообщение в зависимости от него
       message: statusCode === 500
-        ? 'На сервере произошла ошибка'
+        ? errorMessages.serverError
         : message,
     });
   next();

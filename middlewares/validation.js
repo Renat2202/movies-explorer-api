@@ -1,7 +1,15 @@
 const { celebrate, Joi } = require('celebrate');
+const validator = require('validator');
 
-// eslint-disable-next-line no-useless-escape
-const URL_PATTERN = /(http(s)?:\/\/.)?(www\.)?[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&//=]+)/;
+const { errorMessages } = require('../constants/constants');
+
+const urlMethod = (value) => {
+  const result = validator.isURL(value);
+  if (result) {
+    return value;
+  }
+  throw new Error(errorMessages.urlValidationError);
+};
 
 module.exports.validateSignUp = celebrate({
   body: Joi.object().keys({
@@ -32,9 +40,9 @@ module.exports.validateMovieCreation = celebrate({
     duration: Joi.number().required(),
     year: Joi.string().required(),
     description: Joi.string().required(),
-    image: Joi.string().required().pattern(URL_PATTERN),
-    trailer: Joi.string().required().pattern(URL_PATTERN),
-    thumbnail: Joi.string().required().pattern(URL_PATTERN),
+    image: Joi.string().required().custom(urlMethod),
+    trailer: Joi.string().required().custom(urlMethod),
+    thumbnail: Joi.string().required().custom(urlMethod),
     nameRU: Joi.string().required(),
     nameEN: Joi.string().required(),
     movieId: Joi.number().required(),

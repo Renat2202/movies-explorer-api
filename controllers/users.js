@@ -8,19 +8,21 @@ const ValidationError = require('../errors/validation-err');
 const UnauthorizedError = require('../errors/unauthorized-err');
 const ConflictError = require('../errors/conflict-error');
 
+const { errorMessages } = require('../constants/constants');
+
 const { JWT_SECRET = 'secret-key' } = process.env;
 
 module.exports.getUser = (req, res, next) => {
   User.findById(req.user._id)
     .then((user) => {
       if (user === null) {
-        throw new NotFoundError('Пользователь по указанному _id не найден.');
+        throw new NotFoundError(errorMessages.userIdNotFoundError);
       }
       return res.status(200).send({ email: user.email, name: user.name });
     })
     .catch((err) => {
       if (err.name === 'CastError') {
-        next(new ValidationError('Невалидный id.'));
+        next(new ValidationError(errorMessages.notValidIdError));
         return;
       }
       next(err);
@@ -34,17 +36,17 @@ module.exports.updateUser = (req, res, next) => {
   User.findByIdAndUpdate(currentUser, { $set: { email, name } }, { new: true, runValidators: true })
     .then((updatedUser) => {
       if (currentUser === null) {
-        throw new NotFoundError('Пользователь по указанному _id не найден.');
+        throw new NotFoundError(errorMessages.userIdNotFoundError);
       }
       return res.status(200).send({ email: updatedUser.email, name: updatedUser.name });
     })
     .catch((err) => {
       if (err.name === 'CastError') {
-        next(new ValidationError('Невалидный id.'));
+        next(new ValidationError(errorMessages.notValidIdError));
         return;
       }
       if (err.name === 'ValidationError') {
-        next(new ValidationError('Переданы некорректные данные при обновлении профиля'));
+        next(new ValidationError(errorMessages.userUpdateValidationError));
         return;
       }
       next(err);
@@ -66,15 +68,15 @@ module.exports.createUser = (req, res, next) => {
     }))
     .then((user) => {
       const newUser = Object.assign(user, { password: undefined });
-      res.status(201).send({ newUser });
+      res.status(201).send(newUser);
     })
     .catch((err) => {
-      if (err.name === 'MongoError' && err.code === 11000) {
-        next(new ConflictError('Указанный email уже используется'));
+      if (err.name === 'ValidationError') {
+        next(new ValidationError(errorMessages.userCreateValidationError));
         return;
       }
-      if (err.name === 'ValidationError') {
-        next(new ValidationError('Переданы некорректные данные при создании карточки'));
+      if (err.name === 'MongoServerError' && err.code === 11000) {
+        next(new ConflictError(errorMessages.emailAlreadyUseError));
         return;
       }
       next(err);
@@ -87,13 +89,13 @@ module.exports.login = (req, res, next) => {
   return User.findUserByCredentials(email, password)
     .then((user) => {
       if (user === null) {
-        throw new NotFoundError('Пользователь с указанным id не найден');
+        throw new NotFoundError(errorMessages.userIdNotFoundError);
       }
       res.status(200).send({ token: jwt.sign({ _id: user._id }, JWT_SECRET, { expiresIn: '7d' }) });
     })
     .catch((err) => {
       if (err.name === 'ValidationError') {
-        next(new UnauthorizedError('Переданы некорректные данные'));
+        next(new UnauthorizedError(errorMessages.loginValidationError));
         return;
       }
       next(err);
