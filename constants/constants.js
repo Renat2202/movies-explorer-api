@@ -1,0 +1,18 @@
+module.exports.errorMessages = {
+  pageNotFoundError: 'Страница не существует',
+  urlValidationError: 'URL validation err',
+  authorizationError: 'Ошибка авторизации',
+  authorizationNeedError: 'Необходима авторизация',
+  emailPasswordError: 'Неправильные почта или пароль',
+  userIdNotFoundError: 'Пользователь по указанному _id не найден.',
+  notValidIdError: 'Невалидный id.',
+  userUpdateValidationError: 'Переданы некорректные данные при обновлении профиля',
+  userCreateValidationError: 'Переданы некорректные данные при создании пользователя',
+  emailAlreadyUseError: 'Указанный email уже используется',
+  loginValidationError: 'Переданы некорректные данные',
+  movieCreateValidationError: 'Переданы некорректные данные при создании фильма',
+  movieIdNotFoundError: 'Фильм по указанному _id не найден.',
+  movieDeleteRightsError: 'Нет прав на удаление фильма',
+  wrongUrlError: 'Некоректная ссылка',
+  serverError: 'На сервере произошла ошибка',
+};
