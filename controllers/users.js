@@ -18,7 +18,7 @@ module.exports.getUser = (req, res, next) => {
       if (user === null) {
         throw new NotFoundError(errorMessages.userIdNotFoundError);
       }
-      return res.status(200).send({ email: user.email, name: user.name });
+      return res.status(200).send({ email: user.email, name: user.name, _id: user._id });
     })
     .catch((err) => {
       if (err.name === 'CastError') {

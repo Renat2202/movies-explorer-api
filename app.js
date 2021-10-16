@@ -23,6 +23,8 @@ const corsOptions = {
     'https://www.renat-frontend.tk',
     'https://renat-frontend.tk',
     'http://renat-frontend.tk',
+    'http://localhost:3000',
+
   ],
   methods: ['GET', 'HEAD', 'PUT', 'PATCH', 'POST', 'DELETE'],
   preflightContinue: false,
