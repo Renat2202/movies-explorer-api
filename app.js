@@ -19,15 +19,15 @@ const { requestLogger, errorLogger } = require('./middlewares/logger');
 const { limiter } = require('./middlewares/limiter');
 
 const corsOptions = {
-  origin: [
-    '*',
-    'https://www.renat-frontend.tk',
-    'https://renat-frontend.tk',
-    'http://renat-frontend.tk',
-    'https://www.movies-explorer.tk',
-    'https://movies-explorer.tk',
-    'http://movies-explorer.tk',
-  ],
+  // origin: [
+  //   'https://www.renat-frontend.tk',
+  //   'https://renat-frontend.tk',
+  //   'http://renat-frontend.tk',
+  //   'https://www.movies-explorer.tk',
+  //   'https://movies-explorer.tk',
+  //   'http://movies-explorer.tk',
+  // ],
+  origin: '*',
   methods: ['GET', 'HEAD', 'PUT', 'PATCH', 'POST', 'DELETE'],
   preflightContinue: false,
   optionsSuccessStatus: 204,
