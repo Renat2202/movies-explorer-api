@@ -1,5 +1,5 @@
 const {
-  MONGO_DB, NODE_ENV, PORT = 3000, JWT_SECRET,
+  MONGO_DB, NODE_ENV, PORT = 3001, JWT_SECRET,
 } = process.env;
 
 const DB = NODE_ENV === 'production' ? MONGO_DB : 'mongodb://localhost:27017/moviesdb';
