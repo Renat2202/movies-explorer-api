@@ -18,24 +18,24 @@ const { requestLogger, errorLogger } = require('./middlewares/logger');
 
 const { limiter } = require('./middlewares/limiter');
 
-const corsOptions = {
-  origin: [
-    'https://www.renat-frontend.tk',
-    'https://renat-frontend.tk',
-    'http://renat-frontend.tk',
-    'http://localhost:3000',
-  ],
-  methods: ['GET', 'HEAD', 'PUT', 'PATCH', 'POST', 'DELETE'],
-  preflightContinue: false,
-  optionsSuccessStatus: 204,
-  allowedHeaders: ['Content-Type', 'origin', 'Authorization'],
-};
+// const corsOptions = {
+//   origin: [
+//     'https://www.renat-frontend.tk',
+//     'https://renat-frontend.tk',
+//     'http://renat-frontend.tk',
+//     'http://localhost:3000',
+//   ],
+//   methods: ['GET', 'HEAD', 'PUT', 'PATCH', 'POST', 'DELETE'],
+//   preflightContinue: false,
+//   optionsSuccessStatus: 204,
+//   allowedHeaders: ['Content-Type', 'origin', 'Authorization'],
+// };
 
 const app = express();
 
 app.use(bodyParser.json());
-app.use('*', cors(corsOptions));
-// app.use('*', cors());
+// app.use('*', cors(corsOptions));
+app.use('*', cors({ origin: '*' }));
 app.use(helmet());
 
 mongoose.connect(DB);
