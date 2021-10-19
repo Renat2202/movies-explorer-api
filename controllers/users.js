@@ -12,12 +12,6 @@ const { errorMessages } = require('../constants/constants');
 
 const { JWT_SECRET = 'secret-key' } = process.env;
 
-module.exports._getUsers = (req, res, next) => {
-  User.find({})
-    .then((users) => res.status(200).send(users))
-    .catch(next);
-};
-
 module.exports.getUser = (req, res, next) => {
   User.findById(req.user._id)
     .then((user) => {
